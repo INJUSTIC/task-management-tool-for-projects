@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Add Developer</title>
+</head>
+<body>
+
+
+
+<form th:action="@{/developer}" method="POST" th:object="${developer}">
+    <div>
+        <span th:if="${#fields.hasErrors('firstName')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{firstName}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('lastName') and not #fields.hasErrors('firstName')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{lastName}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('email') and not #fields.hasErrors('firstName') and not #fields.hasErrors('lastName')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{email}"></span>
+        </span>
+    </div>
+
+    <br>
+
+
+    First name <input type="text" th:field="*{firstName}"
+                      class="form-control mb-4 w-25">
+
+    Last name <input type="text" th:field="*{lastName}"
+                     class="form-control mb-4 w-25">
+
+    Email <input type="email" th:field="*{email}"
+                 class="form-control mb-4 w-25">
+    Specialization
+    <select id="specialization" name="specialization" th:field="*{specialization}">
+        <option th:each="spec : ${T(com.example.solvro.enums.Specialization).values()}"
+                th:value="${spec}" th:text="${spec}"></option>
+    </select>
+    <br><br>
+
+    <button type="submit" class="btn btn-info col-2">Save</button>
+</form>
+<br>
+<form action="/developers" method="GET">
+    <button type="submit" class="tn btn-info col-2">Cancel</button>
+</form>
+
+
+</body>
+</html>

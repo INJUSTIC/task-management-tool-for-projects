@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>List of projects</title>
+</head>
+<body>
+<h3>All Projects</h3>
+<br>
+<a th:href="@{/project}"
+   class="btn btn-info btn-sm">
+    Add New Project
+</a>
+<br><br>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="project : ${projects}">
+
+        <td th:text="${project.getProject_credentials().getName()}" />
+        <td th:text="${project.getProject_credentials().getDescription()}" />
+        <td>
+            <div class="row">
+
+                <div class="col-small">
+                    <form action="#" th:action="@{/projects/{projectId}(projectId=${project.id})}" method="GET">
+
+                        <button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">Manage</button>
+                    </form>
+
+                    <form th:action="@{/projects/{projectId}(projectId=${project.id})}" method="POST">
+
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+                            Delete
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+<nav>
+    <ul>
+        <li>
+            <a th:href="@{/developers}">All developers</a>
+        </li>
+        <li>
+            <a th:href="@{/}">Main Page</a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

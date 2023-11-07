@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Developer Management</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/developer}" method="POST" th:object="${developer}">
+
+    <div>
+        <span th:if="${#fields.hasErrors('firstName')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{firstName}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('lastName') and not #fields.hasErrors('firstName')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{lastName}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('email') and not #fields.hasErrors('firstName') and not #fields.hasErrors('lastName')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{email}"></span>
+        </span>
+    </div>
+
+    <br>
+
+    <input type="hidden" th:field="*{id}" />
+
+    First name <input type="text" th:field="*{firstName}"
+                        class="form-control mb-4 w-25">
+
+    Last name <input type="text" th:field="*{lastName}"
+                      class="form-control mb-4 w-25">
+
+    Email <input type="email" th:field="*{email}"
+                     class="form-control mb-4 w-25">
+
+    Specialization: <span th:text="${developer.specialization}"></span>
+
+    <br><br>
+
+    <input type="hidden" th:field="*{specialization}" th:value="${developer.specialization}" />
+    <input type="hidden" th:field="*{taskCredentials}" th:value="${developer.taskCredentials}" />
+    <input type="hidden" th:field="*{projectCredentials}" th:value="${developer.projectCredentials}" />
+
+    <button type="submit" class="btn btn-info col-2">Save</button>
+
+</form>
+<br>
+<h3>Projects</h3>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="projectCredentials : ${developer.projectCredentials}">
+
+        <td>
+            <a th:href="@{/projects/{projectId}(projectId=${projectCredentials.project.id})}" th:text="${projectCredentials.name}"></a>
+        </td>
+
+        <td th:text="${projectCredentials.description}" />
+
+    </tr>
+    </tbody>
+</table>
+
+<nav>
+    <ul>
+        <li>
+            <a th:href="@{/developers}">All developers</a>
+        </li>
+        <li>
+            <a th:href="@{/projects}">All projects</a>
+        </li>
+        <li>
+            <a th:href="@{/}">Main Page</a>
+        </li>
+    </ul>
+</nav>
+
+
+</body>
+</html>

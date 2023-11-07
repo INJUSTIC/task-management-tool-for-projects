@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Project Management</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/project}" method="POST" th:object="${project}">
+
+    <div>
+        <span th:if="${#fields.hasErrors('project_credentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{project_credentials.name}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('project_credentials.description') and not #fields.hasErrors('project_credentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{project_credentials.description}"></span>
+        </span>
+    </div>
+
+    <br>
+
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{tasks}" />
+
+    Project name <input type="text" th:field="*{project_credentials.name}"
+           class="form-control mb-4 w-25">
+
+    Project description <input type="text" th:field="*{project_credentials.description}"
+                        class="form-control mb-4 w-25">
+
+    <input type="hidden" th:field="*{project_credentials}" />
+
+    <button type="submit" class="btn btn-info col-2">Save</button>
+</form>
+<br>
+<h3>Developers</h3>
+<br>
+<ul>
+<li th:each="developer: ${project.getProject_credentials().developers}">
+    <a th:href="@{/developers/{developerId}(developerId = ${developer.getId()})}" th:text="${developer.firstName} + ' ' + ${developer.lastName}"> </a>
+</li>
+</ul>
+<br><br>
+<h3>Tasks</h3>
+
+<a th:href="@{/projects/{projectId}/task(projectId = ${project.id})}" class="btn btn-info btn-sm">
+    Add New Task
+</a>
+<a th:href="@{/projects/{projectId}/tasks/completed(projectId = ${project.id})}" class="btn btn-secondary btn-sm ms-2">
+    View Completed Tasks
+</a>
+
+
+</a>
+<br><br>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>Name</th>
+        <th>Specialization</th>
+        <th>Developer</th>
+        <th>Created</th>
+        <th>State</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="task : ${project.getNotCompletedTasks()}">
+
+        <td th:text="${task.getTaskCredentials().getName()}" />
+        <td th:text="${task.getTaskCredentials().getSpecialization()}" />
+        <td>
+            <span th:if="${task.getTaskCredentials().getDeveloper() != null}"
+                th:text="${task.getTaskCredentials().getDeveloper().getFirstName() + ' ' + task.getTaskCredentials().getDeveloper().getLastName()}" />
+            <span th:unless="${task.getTaskCredentials().getDeveloper() != null}">None</span>
+        </td>
+        <td th:text="${#dates.format(task.getCreatedAt(), 'dd/MM/yyyy HH:mm')}" />
+        <td th:text="${task.getTaskState()}" />
+        <td>
+            <div class="row">
+
+                <div class="col-small">
+                    <form action="#" th:action="@{/projects/{projectId}/tasks/{taskId}(projectId=${project.id}, taskId = ${task.id})}" method="GET">
+
+                        <button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">Manage</button>
+
+                    </form>
+
+                    <form action="#" th:action="@{/projects/{projectId}/tasks/{taskId}(taskId=${task.id}, projectId=${project.id})}" method="POST">
+
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+                            Delete
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/projects/{projectId}/assignment(projectId = ${project.id})}" class="btn btn-primary btn-sm">
+    Auto Assign Tasks
+</a>
+
+<br><br>
+<nav>
+    <ul>
+        <li>
+            <a th:href="@{/projects}">All projects</a>
+        </li>
+        <li>
+            <a th:href="@{/developers}">All developers</a>
+        </li>
+        <li>
+            <a th:href="@{/}">Main Page</a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

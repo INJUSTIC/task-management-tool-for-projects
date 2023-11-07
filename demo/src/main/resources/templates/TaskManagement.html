@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Task Management</title>
+</head>
+<body>
+
+<form th:action="@{/projects/{projectId}/task(projectId=${task.project.id})}" method="POST" th:object="${task}">
+
+    <div>
+    <span th:if="${#fields.hasErrors('taskCredentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{taskCredentials.name}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('taskCredentials.estimation') and not #fields.hasErrors('taskCredentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{taskCredentials.estimation}"></span>
+        </span>
+        <span th:if="${ErrorTaskDoneWhenNoDeveloper}">
+            <strong>Error:</strong> <span th:text="${ErrorTaskDoneWhenNoDeveloper}" class="alert alert-danger" role="alert"></span>
+        </span>
+    </div>
+    <br>
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{project}" />
+    <input type="hidden" th:field="*{createdAt}"/>
+    <input type="hidden" th:field="*{taskCredentials}"/>
+
+    Task name <input type="text" th:field="*{taskCredentials.name}"
+                     class="form-control mb-4 w-25">
+
+    Task specialization : <span th:text="${task.taskCredentials.specialization}"></span>
+    <br><br>
+    Created at : <span th:text="${#dates.format(task.getCreatedAt(), 'dd/MM/yyyy HH:mm')}" />
+    <br><br>
+    Task estimation
+    <br>
+    <input type="text" th:field="*{taskCredentials.estimation}"
+           class="form-control mb-4 w-25" required>
+
+    Assigned developer :
+    <span th:if="${task.getTaskCredentials().getDeveloper() != null}">
+                                <a th:href="@{/developers/{developerId}(developerId=${task.taskCredentials.developer.id})}"
+                                   th:text="${task.getTaskCredentials().getDeveloper().getFirstName() + ' '
+                                    + task.getTaskCredentials().getDeveloper().getLastName()}"/>
+    </span>
+    <span th:unless="${task.getTaskCredentials().getDeveloper() != null}">None</span>
+    <br><br>
+    Task state:
+    <select id="taskState" name="taskState" th:field="*{taskState}">
+        <option th:each="state : ${T(com.example.solvro.enums.TaskState).values()}" th:value="${state}" th:text="${state}"></option>
+    </select>
+    <br><br>
+    <button type="submit" class="btn btn-info col-2">Submit</button>
+
+</form>
+<br><br>
+<nav>
+    <ul>
+        <li>
+            <a th:href="@{/developers}">All developers</a>
+        </li>
+        <li>
+            <a th:href="@{/projects}">All projects</a>
+        </li>
+        <li>
+            <a th:href="@{/}">Main Page</a>
+        </li>
+    </ul>
+</nav>
+
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Create Project</title>
+</head>
+<body>
+<form th:action="@{/project}" method="POST" th:object="${project}">
+    <div>
+        <span th:if="${#fields.hasErrors('project_credentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{project_credentials.name}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('project_credentials.description') and not #fields.hasErrors('project_credentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{project_credentials.description}"></span>
+        </span>
+    </div>
+
+    <br>
+
+    Project name <input type="text" th:field="*{project_credentials.name}"
+                        class="form-control mb-4 w-25">
+
+    Project description <input type="text" th:field="*{project_credentials.description}"
+                               class="form-control mb-4 w-25">
+
+    Project developers
+
+    <br>
+
+    <select id="developers" name="project_credentials.developers" multiple="multiple" th:field="*{project_credentials.developers}">
+        <option th:each="developer : ${developers}" th:value="${developer.id}" th:text="${developer.firstName} + ' ' + ${developer.lastName} + ' - ' + ${developer.specialization}"></option>
+    </select>
+
+    <br><br>
+
+    <button type="submit" class="btn btn-info col-2">Submit</button>
+</form>
+<br>
+<form action="/projects" method="GET">
+    <button type="submit" class="tn btn-info col-2">Cancel</button>
+</form>
+
+</body>
+</html>

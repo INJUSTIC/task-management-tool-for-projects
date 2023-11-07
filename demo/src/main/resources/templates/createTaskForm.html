@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Create Task</title>
+</head>
+<body>
+
+<form th:action="@{/projects/{projectId}/task(projectId=${task.project.id})}" method="POST" th:object="${task}">
+
+    <div>
+    <span th:if="${#fields.hasErrors('taskCredentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{taskCredentials.name}"></span>
+        </span>
+        <span th:if="${#fields.hasErrors('taskCredentials.estimation') and not #fields.hasErrors('taskCredentials.name')}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:errors="*{taskCredentials.estimation}"></span>
+        </span>
+        <span th:if="${specializationMismatchError}" class="alert alert-danger" role="alert">
+            <strong>Error:</strong> <span th:text="${specializationMismatchError}"></span>
+        </span>
+    </div>
+    <br>
+    <input type="hidden" name="projectId" th:field="*{project}" th:value="${task.project}" />
+
+    Task name <input type="text" th:field="*{taskCredentials.name}"
+                        class="form-control mb-4 w-25">
+
+    Task specialization
+    <br>
+    <select id="specialization" name="specialization" th:field="*{taskCredentials.specialization}">
+    <option th:each="spec : ${T(com.example.solvro.enums.Specialization).values()}"
+            th:value="${spec}" th:text="${spec}"></option>
+    </select>
+    <br><br>
+    Task estimation
+    <br>
+    <input type="text" th:field="*{taskCredentials.estimation}"
+                               class="form-control mb-4 w-25" required>
+
+    Developer
+    <br>
+    <select id="developers" name="developers" th:field="*{taskCredentials.developer}">
+        <option value="">None</option>
+        <option th:each="developer : ${projectDevelopers}" th:value="${developer.id}" th:text="${developer.firstName} + ' ' + ${developer.lastName} + ' - ' + ${developer.specialization}"></option>
+    </select>
+    <br><br>
+    <button type="submit" class="btn btn-info col-2">Save</button>
+</form>
+<br>
+<form th:action="@{/projects/{projectId}(projectId=${task.project.id})}" method="GET">
+    <button type="submit" class="tn btn-info col-2">Cancel</button>
+</form>
+
+</body>
+</html>
