@@ -143,6 +143,7 @@ public class TaskAssignmentAlgorithm {
         }
         return loading;
     }
+
 }
 
 

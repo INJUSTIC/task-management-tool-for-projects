@@ -3,25 +3,29 @@ package com.example.solvro.controller;
 import com.example.solvro.assignment.TaskAssignmentAlgorithm;
 import com.example.solvro.entities.Developer;
 import com.example.solvro.entities.Project;
+import com.example.solvro.entities.ProjectCredentials;
 import com.example.solvro.entities.Task;
 import com.example.solvro.enums.TaskState;
-import com.example.solvro.service.Service;
+import com.example.solvro.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-@org.springframework.stereotype.Controller
-public class Controller {
-    private final Service service;
+@Controller
+public class ProjectController {
+    private final ProjectService service;
 
     @Autowired
-    public Controller(Service service) {
+    public ProjectController(ProjectService service) {
         this.service = service;
     }
 
@@ -141,6 +145,33 @@ public class Controller {
         return "TaskArchive";
     }
 
+    @GetMapping("/projects/{projectId}/addDevelopers")
+    public String getListOfDevelopersToAdd(@PathVariable int projectId, Model model) {
+        Project project = service.findProjectById(projectId);
+        model.addAttribute("projectCredentials", project.getProject_credentials());
+        List<Developer> allDevelopers = service.findAllDevelopers();
+        List<Developer> developersToShow = new ArrayList<>();
+        for (Developer developer : allDevelopers) {
+            Optional<ProjectCredentials> projectCredentials = developer.getProjectCredentials().stream()
+                                                                .filter(ProjectCredentials -> ProjectCredentials.getProject().getId() == projectId)
+                                                                .findFirst();
+            if (projectCredentials.isEmpty()) developersToShow.add(developer);
+        }
+        model.addAttribute("developersToShow", developersToShow);
+        return "addDevelopersToProject";
+    }
+
+    @PostMapping("/projects/{projectId}/addDevelopers")
+    public String addDevelopersToProject(@PathVariable int projectId, @ModelAttribute("projectCredentials") ProjectCredentials projectCredentialsFromForm) {
+        Project project = service.findProjectById(projectId);
+
+        //ProjectCredentials from form contains only selected developers, so we need to add them to already existing in project.
+        project.getProject_credentials().addDevelopersToProject(projectCredentialsFromForm.getDevelopers());
+
+        service.saveProject(project);
+        return "redirect:/projects/" + project.getId();
+    }
+
     @PostMapping("/projects/{projectId}/task")
     public String createOrUpdateTask(@PathVariable int projectId, Model model, @Valid @ModelAttribute("task") Task task, BindingResult bindingResult) {
         if (task.getTaskCredentials().getDeveloper() != null && task.getTaskCredentials().getSpecialization() != task.getTaskCredentials().getDeveloper().getSpecialization()) {
@@ -200,7 +231,7 @@ public class Controller {
     public String createAssignment(@PathVariable int projectId, Model model, HttpSession session) {
         TaskAssignmentAlgorithm taskAssignmentAlgorithm = new TaskAssignmentAlgorithm();
         Project project = service.findProjectWithDependenciesById(projectId);
-            model.addAttribute("notUpdatedProject", project);
+        model.addAttribute("notUpdatedProject", project);
         taskAssignmentAlgorithm.assignTasks(project.getProject_credentials().getDevelopers(), project.getNotAssignedTasks(), project.getCompletedTasks());
         model.addAttribute("projectWithAssignmentTasks", project);
 

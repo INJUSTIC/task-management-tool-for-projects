@@ -7,7 +7,6 @@ public class FibonacciValueValidator implements ConstraintValidator<FibonacciVal
     @Override
     public void initialize(FibonacciValue constraintAnnotation) {
     }
-
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
         if (value <= 1) {

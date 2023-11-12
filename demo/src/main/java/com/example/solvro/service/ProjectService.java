@@ -4,7 +4,7 @@ import com.example.solvro.entities.*;
 
 import java.util.List;
 
-public interface Service {
+public interface ProjectService {
     //developer operations
     Developer saveDeveloper(Developer developer);
     void deleteDeveloperById(int id);

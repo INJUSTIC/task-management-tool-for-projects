@@ -59,6 +59,10 @@ public class ProjectCredentials {
         return developers;
     }
 
+    public void addDevelopersToProject(List<Developer> developers) {
+        this.developers.addAll(developers);
+    }
+
     public void setDevelopers(List<Developer> developers) {
         this.developers = developers;
     }

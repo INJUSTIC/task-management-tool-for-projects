@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add developers to project</title>
+</head>
+<body>
+<form th:action="@{/projects/{projectId}/addDevelopers(projectId=${projectCredentials.project.id})}" method="POST" th:object="${projectCredentials}">
+  <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{project}"/>
+  <input type="hidden" th:field="*{name}"/>
+  <input type="hidden" th:field="*{description}"/>
+
+  <select multiple="multiple" name="developersToAdd" th:field="*{developers}">
+    <option th:each="developer : ${developersToShow}" th:value="${developer.id}" th:text="${developer.firstName} + ' ' + ${developer.lastName}"></option>
+  </select>
+  <br>
+  <button type="submit" class="btn btn-info col-2">Add</button>
+</form>
+
+
+</body>
+</html>

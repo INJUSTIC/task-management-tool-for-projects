@@ -1,16 +1,16 @@
 package com.example.solvro.service;
 
 import com.example.solvro.entities.*;
-import com.example.solvro.enums.TaskState;
 import com.example.solvro.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@org.springframework.stereotype.Service
-public class ServiceImpl implements Service{
+@Service
+public class ServiceImpl implements ProjectService {
     private DeveloperRepository developerRepository;
     private ProjectCredentialsRepository projectCredentialsRepository;
     private ProjectRepository projectRepository;
