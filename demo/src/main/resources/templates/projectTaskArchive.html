@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Task Archive</title>
+</head>
+<body>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>Name</th>
+        <th>Specialization</th>
+        <th>Estimation</th>
+        <th>Created</th>
+        <th>Duration</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="task : ${completedTasks}">
+
+        <td th:text="${task.getTaskCredentials().getName()}"></td>
+        <td th:text="${task.getTaskCredentials().getSpecialization()}"></td>
+        <td th:text="${task.getTaskCredentials().getEstimation()}"></td>
+        <td th:text="${#dates.format(task.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></td>
+        <td th:text="${task.getDurationInStringFormat()}"></td>
+
+    </tr>
+    </tbody>
+</table>
+
+<nav>
+    <ul>
+        <li>
+            <a th:href="@{/projects}">All projects</a>
+        </li>
+        <li>
+            <a th:href="@{/developers}">All developers</a>
+        </li>
+        <li>
+            <a th:href="@{/}">Main Page</a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

@@ -39,7 +39,7 @@
 <br>
 <ul>
 <li th:each="developer: ${project.getProject_credentials().developers}">
-    <a th:href="@{/developers/{developerId}(developerId = ${developer.getId()})}" th:text="${developer.firstName} + ' ' + ${developer.lastName}"> </a>
+    <a th:href="@{/developers/{developerId}(developerId = ${developer.getId()})}" th:text="${developer.firstName} + ' ' + ${developer.lastName}"> </a> - <span th:text="${developer.specialization}"></span>
 </li>
 </ul>
 <a th:href="@{/projects/{projectId}/addDevelopers(projectId=${project.id})}" class="btn btn-info btn-sm">Add developers</a>
@@ -49,7 +49,7 @@
 <a th:href="@{/projects/{projectId}/task(projectId = ${project.id})}" class="btn btn-info btn-sm">
     Add New Task
 </a>
-<a th:href="@{/projects/{projectId}/tasks/completed(projectId = ${project.id})}" class="btn btn-secondary btn-sm ms-2">
+<a th:href="@{/projects/{projectId}/completedTasks(projectId = ${project.id})}" class="btn btn-secondary btn-sm ms-2">
     View Completed Tasks
 </a>
 
@@ -84,13 +84,13 @@
             <div class="row">
 
                 <div class="col-small">
-                    <form action="#" th:action="@{/projects/{projectId}/tasks/{taskId}(projectId=${project.id}, taskId = ${task.id})}" method="GET">
+                    <form action="#" th:action="@{/projects/{projectId}/{taskId}(projectId=${project.id}, taskId = ${task.id})}" method="GET">
 
                         <button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">Manage</button>
 
                     </form>
 
-                    <form action="#" th:action="@{/projects/{projectId}/tasks/{taskId}(taskId=${task.id}, projectId=${project.id})}" method="POST">
+                    <form action="#" th:action="@{/projects/{projectId}/{taskId}(taskId=${task.id}, projectId=${project.id})}" method="POST">
 
                         <input type="hidden" name="_method" value="delete">
                         <button type="submit" class="btn btn-danger btn-sm"

@@ -131,18 +131,25 @@ public class ProjectController {
         return "createTaskForm";
     }
 
-    @GetMapping("/projects/{projectId}/tasks/{taskId}")
+    @GetMapping("/projects/{projectId}/{taskId}")
     public String getTask(@PathVariable int projectId, @PathVariable int taskId, Model model) {
         Task task = service.findTaskById(taskId);
         model.addAttribute("task", task);
-        return "TaskManagement";
+        return "taskManagement";
     }
 
-    @GetMapping("/projects/{projectId}/tasks/completed")
-    public String getCompletedTasks(@PathVariable int projectId, Model model) {
+    @GetMapping("/developers/{developerId}/completedTasks")
+    public String getDeveloperCompletedTasks(@PathVariable int developerId, Model model) {
+        List<Task> completedTasks = service.findCompletedTasksByDeveloperId(developerId);
+        model.addAttribute("completedTasks", completedTasks);
+        return "developerTaskArchive";
+    }
+
+    @GetMapping("/projects/{projectId}/completedTasks")
+    public String getProjectCompletedTasks(@PathVariable int projectId, Model model) {
         List<Task> completedTasks = service.findCompletedTasksByProjectId(projectId);
         model.addAttribute("completedTasks", completedTasks);
-        return "TaskArchive";
+        return "projectTaskArchive";
     }
 
     @GetMapping("/projects/{projectId}/addDevelopers")
@@ -188,7 +195,7 @@ public class ProjectController {
             List<Developer> projectDevelopers = service.findAllDevelopersByProjectId(projectId);
             model.addAttribute("projectDevelopers", projectDevelopers);
             if (task.getId() == 0) return "createTaskForm";
-            else return "TaskManagement";
+            else return "taskManagement";
         }
         if (task.getTaskState() == null) task.setTaskState(TaskState.TODO);
         if(task.getCreatedAt() == null) task.setCreatedAt(new Date());
@@ -197,7 +204,7 @@ public class ProjectController {
                 model.addAttribute("ErrorTaskDoneWhenNoDeveloper", "Task status can't be DONE if there is no attached developer");
                 List<Developer> projectDevelopers = service.findAllDevelopersByProjectId(projectId);
                 model.addAttribute("projectDevelopers", projectDevelopers);
-                return "TaskManagement";
+                return "taskManagement";
             }
             task.setCompletedAt(new Date());
         }
@@ -219,7 +226,7 @@ public class ProjectController {
     }
 
 
-    @DeleteMapping("/projects/{projectId}/tasks/{taskId}")
+    @DeleteMapping("/projects/{projectId}/{taskId}")
     public String deleteTask(@PathVariable int taskId, @PathVariable int projectId) {
         service.deleteTaskById(taskId);
         return "redirect:/projects/" + projectId;
@@ -231,8 +238,9 @@ public class ProjectController {
     public String createAssignment(@PathVariable int projectId, Model model, HttpSession session) {
         TaskAssignmentAlgorithm taskAssignmentAlgorithm = new TaskAssignmentAlgorithm();
         Project project = service.findProjectWithDependenciesById(projectId);
+        List<Task> completedTasks = service.findCompletedTasksByProjectId(projectId);
         model.addAttribute("notUpdatedProject", project);
-        taskAssignmentAlgorithm.assignTasks(project.getProject_credentials().getDevelopers(), project.getNotAssignedTasks(), project.getCompletedTasks());
+        taskAssignmentAlgorithm.assignTasks(project.getProject_credentials().getDevelopers(), project.getNotAssignedTasks(), completedTasks);
         model.addAttribute("projectWithAssignmentTasks", project);
 
         session.setAttribute("updatedProject", project);

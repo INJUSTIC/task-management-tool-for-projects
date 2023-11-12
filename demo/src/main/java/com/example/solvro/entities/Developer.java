@@ -1,11 +1,14 @@
 package com.example.solvro.entities;
 
 import com.example.solvro.enums.Specialization;
+import com.example.solvro.enums.TaskState;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,6 +45,16 @@ public class Developer {
     @Enumerated(EnumType.STRING)
     @Column(name = "specialization")
     private Specialization specialization;
+
+    public List<Task> getNotCompletedTasks() {
+        List<Task> notCompletedTasks = new ArrayList<>();
+        for (TaskCredentials taskCredentials1: taskCredentials) {
+            if (taskCredentials1.getTask().getTaskState() != TaskState.DONE) {
+                notCompletedTasks.add(taskCredentials1.getTask());
+            }
+        }
+        return notCompletedTasks;
+    }
 
     public int getId() {
         return id;

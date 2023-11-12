@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name="Projects")
 public class Project {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

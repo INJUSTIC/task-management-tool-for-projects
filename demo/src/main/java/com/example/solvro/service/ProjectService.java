@@ -36,6 +36,7 @@ public interface ProjectService {
     Task findTaskById(int id);
     List<Task> findAllTasks();
     List<Task> findCompletedTasksByProjectId(int projectId);
+    public List<Task> findCompletedTasksByDeveloperId(int developerId);
 
 
     //Task credentials operations

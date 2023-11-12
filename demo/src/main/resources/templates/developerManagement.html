@@ -69,6 +69,32 @@
     </tbody>
 </table>
 
+<br>
+<h3>Tasks</h3>
+<a th:href="@{/developers/{developerId}/completedTasks(developerId = ${developer.id})}" class="btn btn-secondary btn-sm ms-2">
+    View Completed Tasks
+</a>
+<br><br>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+        <th>Name</th>
+        <th>Created</th>
+        <th>State</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="task : ${developer.getNotCompletedTasks()}">
+
+        <td th:text="${task.taskCredentials.getName()}" />
+        <td th:text="${#dates.format(task.getCreatedAt(), 'dd/MM/yyyy HH:mm')}" />
+        <td th:text="${task.getTaskState()}" />
+
+    </tr>
+    </tbody>
+</table>
+
 <nav>
     <ul>
         <li>

@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @Service
 public class ServiceImpl implements ProjectService {
-    private DeveloperRepository developerRepository;
-    private ProjectCredentialsRepository projectCredentialsRepository;
-    private ProjectRepository projectRepository;
-    private TaskCredentialsRepository taskCredentialsRepository;
-    private TaskRepository taskRepository;
+    private final DeveloperRepository developerRepository;
+    private final ProjectCredentialsRepository projectCredentialsRepository;
+    private final ProjectRepository projectRepository;
+    private final TaskCredentialsRepository taskCredentialsRepository;
+    private final TaskRepository taskRepository;
 
     @Autowired
     public ServiceImpl(DeveloperRepository developerRepository, ProjectCredentialsRepository projectCredentialsRepository, ProjectRepository projectRepository, TaskCredentialsRepository taskCredentialsRepository, TaskRepository taskRepository) {
@@ -147,6 +147,15 @@ public class ServiceImpl implements ProjectService {
     @Override
     public List<Task> findCompletedTasksByProjectId(int projectId) {
         List<Task> tasks = taskRepository.findCompletedTasksByProjectId(projectId);
+        for (Task task: tasks) {
+            task.setDuration();
+        }
+        return tasks;
+    }
+
+    @Override
+    public List<Task> findCompletedTasksByDeveloperId(int developerId) {
+        List<Task> tasks = taskRepository.findCompletedTasksByDeveloperId(developerId);
         for (Task task: tasks) {
             task.setDuration();
         }

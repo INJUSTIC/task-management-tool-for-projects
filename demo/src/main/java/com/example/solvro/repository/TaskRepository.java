@@ -13,4 +13,8 @@ public interface TaskRepository extends CrudRepository<Task, Integer>, TaskCusto
     List<Task> findTasksWithStateByProjectId(@Param("projectId") int projectId, @Param("taskState") TaskState taskState);
     @Query("SELECT t FROM Task t WHERE t.project.id = :projectId AND t.taskState = 'DONE'")
     List<Task> findCompletedTasksByProjectId(@Param("projectId") int projectId);
+
+    @Query("SELECT t FROM Task t WHERE t.taskCredentials.developer.id = :developerId AND t.taskState = 'DONE'")
+    List<Task> findCompletedTasksByDeveloperId(@Param("developerId") int developerId);
+
 }
