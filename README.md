@@ -121,7 +121,7 @@ Algorithm is based on evaluating current developer workload and his productivity
 
 ## Instructions to run the project
 
-To run the project, you need to connect it to the database. For this, follow next steps:
+To run the project, follow next steps:
 - download [MySQL Database Server](https://dev.mysql.com/downloads/mysql/) and [MySQL Workbench](https://www.mysql.com/products/workbench/)
 - create a new MySQL user with next credentials:
   - Username: springstudent
