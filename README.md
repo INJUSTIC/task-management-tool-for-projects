@@ -11,75 +11,75 @@ and assign tasks to project and developer, observe task archive . Tasks auto ass
 ## Functionality
 
 ### Observing projects list
--GET /projects
--Endpoint allows to observe all projects
+- GET /projects
+- Endpoint allows to observe all projects
 
 ### Observing developers list
--GET /developers
--Endpoint allows to observe all developers
+- GET /developers
+- Endpoint allows to observe all developers
 
 ### Project creating
--POST /project
--Endpoint allows to create a new project with providing project's data such as name, description and developers.
+- POST /project
+- Endpoint allows to create a new project with providing project's data such as name, description and developers.
 
 ### Project managing
--POST /projects/{projectId}
--Endpoint allows to edit project's name, description, adding developers to a project. It also shows all current project tasks.
+- POST /projects/{projectId}
+- Endpoint allows to edit project's name, description, adding developers to a project. It also shows all current project tasks.
 
 ### Project deleting
--DELETE /projects/{projectId}
--Endpoint deletes specified project with all assigned tasks
+- DELETE /projects/{projectId}
+- Endpoint deletes specified project with all assigned tasks
 
 ### Developer creating
--POST /developer
--Endpoint allows to create a new developer with providing developer's data such as first name, last name, email and specialization.
--Specialization is one of following: BACKEND, FRONTEND, DEVOPS, UX_UI
+- POST /developer
+- Endpoint allows to create a new developer with providing developer's data such as first name, last name, email and specialization.
+- Specialization is one of following: BACKEND, FRONTEND, DEVOPS, UX_UI
 
 ### Developer managing
--POST /developers/{developerId}
--Endpoint allows to edit developer's first and last name, email. It also shows assigned tasks and projects to developer.
+- POST /developers/{developerId}
+- Endpoint allows to edit developer's first and last name, email. It also shows assigned tasks and projects to developer.
 
 ### Developer deleting
--DELETE /developers/{developerId}
--Endpoint deletes specified developer and all his task assignings
+- DELETE /developers/{developerId}
+- Endpoint deletes specified developer and all his task assignings
 
 ### Task creating
--POST /projects/{projectId}/task
--Endpoint allows to create a new task for a project with providing task's data such as name, estimation, specialization and assigned developer
--Estimation is a number from Fibonacci sequence (according to Agile methology)
--Specialization is one of following: BACKEND, FRONTEND, DEVOPS, UX_UI
--Developer assigning is optional
--Developer can be assigned to a task only if his specialization matches task's specialization
+- POST /projects/{projectId}/task
+- Endpoint allows to create a new task for a project with providing task's data such as name, estimation, specialization and assigned developer
+- Estimation is a number from Fibonacci sequence (according to Agile methology)
+- Specialization is one of following: BACKEND, FRONTEND, DEVOPS, UX_UI
+- Developer assigning is optional
+- Developer can be assigned to a task only if his specialization matches task's specialization
 
 ### Task managing
--POST /projects/{projectId}/{taskId}
--Endpoint allows to edit task's name, estimation and status
--Status is one of following: TODO, IN_PROGRESS, TESTING, DONE
--When task's status changes to DONE, it automatically tranfers to task archive and disappears from project's page.
+- POST /projects/{projectId}/{taskId}
+- Endpoint allows to edit task's name, estimation and status
+- Status is one of following: TODO, IN_PROGRESS, TESTING, DONE
+- When task's status changes to DONE, it automatically tranfers to task archive and disappears from project's page.
 
 ### Task deleting
--DELETE /projects/{projectId}/{taskId}
--Endpoint allows to delete a task
+- DELETE /projects/{projectId}/{taskId}
+- Endpoint allows to delete a task
 
 ### Creating task auto assigning proposition
--GET /projects/{projectId}/assignment
--Endpoint creates a task assigning proposal based on the designed algorithm.
+- GET /projects/{projectId}/assignment
+- Endpoint creates a task assigning proposal based on the designed algorithm.
 
 ### Accepting task auto assigning proposition
--POST /projects/{projectId}/assignment
--Endpoint allows to accept or reject task auto assigning proposition
+- POST /projects/{projectId}/assignment
+- Endpoint allows to accept or reject task auto assigning proposition
 
 ### Adding developers to existing project
--POST /projects/{projectId}/addDevelopers
--Endpoint allows to add new developers to the project
+- POST /projects/{projectId}/addDevelopers
+- Endpoint allows to add new developers to the project
 
 ### Observing project's completed tasks
--GET /projects/{projectId}/completedTasks
--Endpoint allows to observe completed tasks in the project with their durations
+- GET /projects/{projectId}/completedTasks
+- Endpoint allows to observe completed tasks in the project with their durations
 
 ### Observing developer's completed tasks
--GET /developers/{developerId}/completedTasks
--Endpoint allows to observe completed tasks by the developer with their durations
+- GET /developers/{developerId}/completedTasks
+- Endpoint allows to observe completed tasks by the developer with their durations
 
 ## Algorithm
 
