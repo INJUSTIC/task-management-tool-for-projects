@@ -1,6 +1,6 @@
 # task-management-tool-for-projects
 
-## Used technologies:
+## Used technologies
 Spring Boot, Spring MVC, Hibernate, MySQL, REST API, CRUD, Spring Data JPA, Spring Validation, Thymeleaf, HTML, CSS
 
 ## Overview
