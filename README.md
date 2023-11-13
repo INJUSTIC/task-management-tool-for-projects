@@ -6,7 +6,7 @@ Spring Boot, Spring MVC, Hibernate, MySQL, REST API, CRUD, Spring Data JPA, Spri
 ## Overview
 
 This is a Spring Boot application that allows to auto assign tasks to developers in a project. You can create, manage and delete projects, developers and tasks, assign developers to project
-and assign tasks to project and developer, observe task archive . Tasks auto assigning is performing due to algorithm which is described below
+and assign tasks to project and developer, observe task archive . Tasks auto assigning is performing due to the algorithm which is described below
 
 ## Functionality
 
