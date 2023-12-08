@@ -131,4 +131,3 @@ To run the project, follow next steps:
 - Run the script `CreateDatabase.sql` in the `\demo\src\main\java\com\example\solvro\sql` folder
 - Run the project
 - In browser, enter "http://localhost:8080/" in the search bar
-
